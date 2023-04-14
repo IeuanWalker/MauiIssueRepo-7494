@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="App.Pages.MainPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:buttons="clr-namespace:App.Controls.Buttons"
+             xmlns:vm="clr-namespace:App.ViewModels"
+             x:DataType="vm:HomeViewModel">
+    <Grid>
+        <!-- Logs -->
+        <CarouselView x:Name="LogCarousel"
+                      Grid.Row="0"
+                      CurrentItem="{Binding SelectedLog}"
+                      ItemsSource="{Binding Logs}"
+                      Loop="False"
+                      PeekAreaInsets="0"
+                      PositionChanged="LogCarousel_PositionChanged"
+                      VerticalOptions="FillAndExpand">
+            <CarouselView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal"
+                                   SnapPointsAlignment="Center"
+                                   SnapPointsType="MandatorySingle" />
+            </CarouselView.ItemsLayout>
+            <CarouselView.ItemTemplate>
+                <DataTemplate x:DataType="vm:TestModel">
+                    <CollectionView ItemsSource="{Binding Exercieses}">
+                        <CollectionView.Header>
+                            <BoxView BackgroundColor="Transparent" HeightRequest="90" />
+                        </CollectionView.Header>
+                        <CollectionView.EmptyView>
+                            <Label Text="Nothing logged" />
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="vm:LoggedExerciesModel">
+                                <Border Margin="10,5"
+                                        BackgroundColor="White"
+                                        StrokeShape="RoundRectangle 15">
+                                    <Grid ColumnDefinitions="66,*" RowDefinitions="auto,*">
+                                        <!-- Image -->
+                                        <Border Grid.Row="0"
+                                                Grid.Column="0"
+                                                Margin="10,5"
+                                                BackgroundColor="#F5F6FA"
+                                                HeightRequest="56"
+                                                StrokeShape="RoundRectangle 15"
+                                                WidthRequest="56" />
+
+                                        <!-- Exersie name -->
+                                        <Label Grid.Row="0"
+                                               Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               TextColor="Black"
+                                               VerticalTextAlignment="Center" />
+
+                                        <!-- Logs -->
+                                        <CollectionView Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        Grid.ColumnSpan="2"
+                                                        Margin="10"
+                                                        ItemsSource="{Binding Sets}">
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:SetsModels">
+                                                    <HorizontalStackLayout HorizontalOptions="End" Spacing="30">
+                                                        <Label Margin="0,3" TextColor="Black">
+                                                            <Label.FormattedText>
+                                                                <FormattedString>
+                                                                    <Span Text="{Binding Weight}" />
+                                                                    <Span Text=" kg" />
+                                                                </FormattedString>
+                                                            </Label.FormattedText>
+                                                        </Label>
+                                                        <Label Margin="0,3"
+                                                               HorizontalTextAlignment="End"
+                                                               MinimumWidthRequest="60"
+                                                               TextColor="Black">
+                                                            <Label.FormattedText>
+                                                                <FormattedString>
+                                                                    <Span Text="{Binding Reps}" />
+                                                                    <Span Text=" reps" />
+                                                                </FormattedString>
+                                                            </Label.FormattedText>
+                                                        </Label>
+                                                    </HorizontalStackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+        <!-- Date Header -->
+        <Border Grid.Row="0"
+                Margin="30,10,30,0"
+                Padding="10"
+                BackgroundColor="White"
+                HorizontalOptions="Fill"
+                StrokeShape="RoundRectangle 40"
+                VerticalOptions="Start">
+            <Grid ColumnDefinitions="35,*,35">
+                <buttons:NextBackArrow x:Name="previousDateBtn"
+                                       Grid.Column="0"
+                                       AccessibilityText="Previous date"
+                                       Clicked="PreviousDateBtn_Clicked"
+                                       Icon="https://cdn0.iconfinder.com/data/icons/multimedia-2-outline-24-px/24/back_arrow_left_previous_direction-512.png" />
+                <Label Grid.Column="1"
+                       Margin="10"
+                       HorizontalTextAlignment="Center"
+                       Text="{Binding SelectedLog.DateDisplayTest}"
+                       TextColor="Black"
+                       VerticalTextAlignment="Center" />
+                <buttons:NextBackArrow x:Name="nextDateBtn"
+                                       Grid.Column="2"
+                                       AccessibilityText="Next date"
+                                       Clicked="NextDateBtn_Clicked"
+                                       Icon="https://cdn0.iconfinder.com/data/icons/multimedia-2-outline-24-px/24/next_right_arrow_forward_direction-512.png" />
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>
